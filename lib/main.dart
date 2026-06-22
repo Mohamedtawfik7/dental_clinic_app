@@ -1,4 +1,5 @@
 import 'package:dental_clinic_app/core/di/service_locator.dart';
+import 'package:dental_clinic_app/core/router/app_router.dart';
 import 'package:dental_clinic_app/features/appointments/data/models/appointment_model.dart';
 import 'package:dental_clinic_app/features/patients/data/models/patient_model.dart';
 import 'package:dental_clinic_app/features/services/data/models/services_model.dart';
@@ -25,10 +26,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'Dental Clinic',
-      home: Scaffold(body: Center(child: Text('Dental Clinic App'))),
+      routerConfig: AppRouter.router,
     );
   }
 }
