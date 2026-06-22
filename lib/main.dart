@@ -1,3 +1,4 @@
+import 'package:dental_clinic_app/core/di/service_locator.dart';
 import 'package:dental_clinic_app/features/appointments/data/models/appointment_model.dart';
 import 'package:dental_clinic_app/features/patients/data/models/patient_model.dart';
 import 'package:dental_clinic_app/features/services/data/models/services_model.dart';
@@ -15,7 +16,7 @@ void main() async {
   await Hive.openBox<PatientModel>('patients');
   await Hive.openBox<AppointmentModel>('appointments');
   await Hive.openBox<ClinicServiceModel>('services');
-
+  setupServiceLocator();
   runApp(const MyApp());
 }
 
