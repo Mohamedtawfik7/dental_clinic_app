@@ -1,17 +1,79 @@
-# dental_clinic_app
+🦷 Dental Clinic App
 
-A new Flutter project.
+A Flutter application for managing a dental clinic — patients, appointments, and services — built with Clean Architecture.
 
-## Getting Started
+📱 Screenshots
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+
+
+
+
+
+
+
+
+✨ Features
+
+- Patients Management — Add, view, and delete patients
+- Appointments — Schedule and track appointments, mark as done
+- Services — Manage clinic services with prices and durations
+- Dashboard — Quick overview of total patients and today's appointments
+- Local Storage — All data saved locally using Hive
+
+
+
+🏗️ Architecture
+
+This project follows Clean Architecture principles:
+
+lib/
+├── core/
+│   ├── di/          ← Dependency Injection (get_it)
+│   ├── router/      ← Navigation (GoRouter)
+│   └── theme/       ← App Theme
+│
+└── features/
+    ├── patients/
+    │   ├── data/        ← Models + Repository
+    │   ├── domain/      ← Entities
+    │   └── presentation ← Cubit + Screens
+    ├── appointments/
+    └── services/
+
+
+🛠️ Tech Stack
+
+PurposePackageState Managementflutter_blocLocal Storagehive + hive_flutterDependency Injectionget_itNavigationgo_routerUnique IDsuuidModel Equalityequatable
+
+
+🚀 Getting Started
+
+
+Clone the repo
+
+
+bashgit clone https://github.com/YOUR_USERNAME/dental_clinic_app.git
+cd dental_clinic_app
+
+
+Install dependencies
+
+
+bashflutter pub get
+
+
+Run the app
+
+
+bashflutter run
+
+
+👨‍💻 Author
+
+Mohamed Tawfik
+GitHub: @Mohamedtawfik7
+LinkedIn:www.linkedin.com/in/mohamed-tawfik-210607407
