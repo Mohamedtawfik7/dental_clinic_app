@@ -32,7 +32,34 @@ class ServicesScreen extends StatelessWidget {
 
             if (state is ServicesLoaded) {
               if (state.services.isEmpty) {
-                return const Center(child: Text('No services found'));
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.medical_services_outlined,
+                        size: 80,
+                        color: Colors.grey.shade300,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'No services yet',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.grey.shade500,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Tap + to add your first service',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey.shade400,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
               }
 
               return ListView.builder(
@@ -102,6 +129,12 @@ class ServicesScreen extends StatelessWidget {
                 price: double.tryParse(priceController.text) ?? 0.0,
                 durationMinutes: durationController.text,
               );
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Service added successfully'),
+                  backgroundColor: Colors.green,
+                ),
+              );
               Navigator.pop(dialogContext);
             },
             child: const Text('Add'),
@@ -136,10 +169,38 @@ class _ServiceCard extends StatelessWidget {
             Text('${service.durationMinutes} min'),
           ],
         ),
-        onLongPress: () {
-          context.read<ServicesCubit>().deleteService(service);
-        },
+        onLongPress: () => _showDeleteDialog(context, service),
       ),
     );
   }
+}
+
+void _showDeleteDialog(BuildContext context, ClinicServiceModel service) {
+  showDialog(
+    context: context,
+    builder: (_) => AlertDialog(
+      title: const Text('Delete Service'),
+      content: Text('Are you sure you want to delete ${service.name}?'),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancel'),
+        ),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+          onPressed: () {
+            context.read<ServicesCubit>().deleteService(service);
+            Navigator.pop(context);
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Service deleted'),
+                backgroundColor: Colors.red,
+              ),
+            );
+          },
+          child: const Text('Delete', style: TextStyle(color: Colors.white)),
+        ),
+      ],
+    ),
+  );
 }

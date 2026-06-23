@@ -32,7 +32,34 @@ class AppointmentsScreen extends StatelessWidget {
 
             if (state is AppointmentsLoaded) {
               if (state.appointments.isEmpty) {
-                return const Center(child: Text('No appointments found'));
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.calendar_today_outlined,
+                        size: 80,
+                        color: Colors.grey.shade300,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'No appointments yet',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.grey.shade500,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Tap + to add your first appointment',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey.shade400,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
               }
 
               return ListView.builder(
@@ -108,6 +135,12 @@ class AppointmentsScreen extends StatelessWidget {
                 serviceType: serviceController.text,
                 notes: notesController.text,
               );
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Appointment added successfully'),
+                  backgroundColor: Colors.green,
+                ),
+              );
               Navigator.pop(dialogContext);
             },
             child: const Text('Add'),
@@ -147,10 +180,40 @@ class _AppointmentCard extends StatelessWidget {
                   context.read<AppointmentsCubit>().markAsDone(appointment);
                 },
               ),
-        onLongPress: () {
-          context.read<AppointmentsCubit>().deleteAppointment(appointment);
-        },
+        onLongPress: () => _showDeleteDialog(context, appointment),
       ),
     );
   }
+}
+
+void _showDeleteDialog(BuildContext context, AppointmentModel appointment) {
+  showDialog(
+    context: context,
+    builder: (_) => AlertDialog(
+      title: const Text('Delete Appointment'),
+      content: Text(
+        'Are you sure you want to delete ${appointment.patientName}?',
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancel'),
+        ),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+          onPressed: () {
+            context.read<AppointmentsCubit>().deleteAppointment(appointment);
+            Navigator.pop(context);
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Appointment deleted'),
+                backgroundColor: Colors.red,
+              ),
+            );
+          },
+          child: const Text('Delete', style: TextStyle(color: Colors.white)),
+        ),
+      ],
+    ),
+  );
 }

@@ -1,4 +1,5 @@
 import 'package:dental_clinic_app/core/di/service_locator.dart';
+import 'package:dental_clinic_app/features/patients/data/models/patient_model.dart';
 import 'package:dental_clinic_app/features/patients/presentation/cubit/patients_cubit.dart';
 import 'package:dental_clinic_app/features/patients/presentation/cubit/patients_state.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,34 @@ class PatientsScreen extends StatelessWidget {
 
             if (state is PatientsLoaded) {
               if (state.patients.isEmpty) {
-                return const Center(child: Text('No patients found'));
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.people_outline,
+                        size: 80,
+                        color: Colors.grey.shade300,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'No patients yet',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.grey.shade500,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Tap + to add your first patient',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey.shade400,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
               }
 
               return ListView.builder(
@@ -47,9 +75,7 @@ class PatientsScreen extends StatelessWidget {
                       subtitle: Text('${patient.phone} • ${patient.age} years'),
                       trailing: IconButton(
                         icon: const Icon(Icons.delete, color: Colors.red),
-                        onPressed: () {
-                          context.read<PatientsCubit>().deletePatient(patient);
-                        },
+                        onPressed: () => _showDeleteDialog(context, patient),
                       ),
                     ),
                   );
@@ -113,6 +139,12 @@ class PatientsScreen extends StatelessWidget {
                 notes: notesController.text,
               );
               Navigator.pop(context);
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Patient added successfully'),
+                  backgroundColor: Colors.green,
+                ),
+              );
             },
             child: const Text('Add'),
           ),
@@ -120,4 +152,34 @@ class PatientsScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+void _showDeleteDialog(BuildContext context, PatientModel patient) {
+  showDialog(
+    context: context,
+    builder: (_) => AlertDialog(
+      title: const Text('Delete Patient'),
+      content: Text('Are you sure you want to delete ${patient.name}?'),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancel'),
+        ),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+          onPressed: () {
+            context.read<PatientsCubit>().deletePatient(patient);
+            Navigator.pop(context);
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Patient deleted'),
+                backgroundColor: Colors.red,
+              ),
+            );
+          },
+          child: const Text('Delete', style: TextStyle(color: Colors.white)),
+        ),
+      ],
+    ),
+  );
 }
