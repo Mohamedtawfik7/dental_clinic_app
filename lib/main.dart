@@ -31,10 +31,36 @@ class MyApp extends StatelessWidget {
       title: 'Dental Clinic',
       routerConfig: AppRouter.router,
       theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF1A73E8)),
         appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFF5E8E35), //  اللون اللي عايزه
-          foregroundColor: Colors.white, // لون النص والأيقونات
+          backgroundColor: Color(0xFF03589B),
+          foregroundColor: Colors.white,
+          centerTitle: true,
+          elevation: 0,
         ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color.fromARGB(255, 15, 71, 145),
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+        ),
+        cardTheme: CardThemeData(
+          elevation: 2,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 12,
+            vertical: 8,
+          ),
+        ),
+        useMaterial3: true,
       ),
     );
   }
