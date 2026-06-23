@@ -30,8 +30,12 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Dental Clinic',
       routerConfig: AppRouter.router,
-      builder: (context, child) =>
-          Directionality(textDirection: TextDirection.rtl, child: child!),
+      theme: ThemeData(
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color(0xFF5E8E35), //  اللون اللي عايزه
+          foregroundColor: Colors.white, // لون النص والأيقونات
+        ),
+      ),
     );
   }
 }
